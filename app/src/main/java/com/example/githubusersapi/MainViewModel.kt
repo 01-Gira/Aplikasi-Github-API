@@ -20,6 +20,9 @@ class MainViewModel : ViewModel() {
     private val _listUsers = MutableLiveData<Resource<List<UserResponse>>>()
     private val _detailUser = MutableLiveData<Resource<UserResponse>>()
 
+    private val _listFollower = MutableLiveData<Resource<List<UserResponse>>>()
+    private val _listFollowing = MutableLiveData<Resource<List<UserResponse>>>()
+
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
@@ -93,7 +96,7 @@ class MainViewModel : ViewModel() {
 
     fun getFollowerUser(login: String): LiveData<Resource<List<UserResponse>>>{
         _isLoading.value = true
-        _listUsers.postValue(Resource.Loading())
+        _listFollower.postValue(Resource.Loading())
         client.getFollowerUser(login).enqueue(object : Callback <List<UserResponse>> {
             override fun onResponse(
                 call: Call<List<UserResponse>>,
@@ -102,9 +105,9 @@ class MainViewModel : ViewModel() {
                 _isLoading.value = false
                 val list = response.body()
                 if (response.isSuccessful)
-                    _listUsers.postValue(Resource.Success(list))
+                    _listFollower.postValue(Resource.Success(list))
                 else
-                    _listUsers.postValue(Resource.Error(null))
+                    _listFollower.postValue(Resource.Error(null))
             }
 
             override fun onFailure(call: Call<List<UserResponse>>, t: Throwable) {
@@ -113,12 +116,12 @@ class MainViewModel : ViewModel() {
             }
 
         })
-        return _listUsers
+        return _listFollower
     }
 
     fun getFollowingUser(login: String): LiveData<Resource<List<UserResponse>>>{
         _isLoading.value = true
-        _listUsers.postValue(Resource.Loading())
+        _listFollowing.postValue(Resource.Loading())
         client.getFollowingUser(login).enqueue(object : Callback <List<UserResponse>> {
             override fun onResponse(
                 call: Call<List<UserResponse>>,
@@ -127,9 +130,9 @@ class MainViewModel : ViewModel() {
                 _isLoading.value = false
                 val list = response.body()
                 if (response.isSuccessful)
-                    _listUsers.postValue(Resource.Success(list))
+                    _listFollowing.postValue(Resource.Success(list))
                 else
-                    _listUsers.postValue(Resource.Error(null))
+                    _listFollowing.postValue(Resource.Error(null))
             }
 
             override fun onFailure(call: Call<List<UserResponse>>, t: Throwable) {
@@ -138,7 +141,7 @@ class MainViewModel : ViewModel() {
             }
 
         })
-        return _listUsers
+        return _listFollowing
     }
 
 }
