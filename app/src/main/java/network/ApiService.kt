@@ -2,7 +2,6 @@ package network
 
 
 import data.SearchUserResponse
-import data.User
 import data.UserResponse
 import retrofit2.Call
 import retrofit2.http.GET
